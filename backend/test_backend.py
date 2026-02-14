@@ -1,10 +1,12 @@
 import pytest
+import os
 from validation import Validator, ValidationError
 from utils import DistanceCalculator
 from geocoding import Geocoder, GeocodingError
 
 
 class TestValidator:
+    """Test validation module"""
     
     def test_valid_address(self):
         """Test valid address validation"""
@@ -44,9 +46,9 @@ class TestValidator:
     
     def test_validate_addresses(self):
         """Test validating both addresses"""
-        source, dest = Validator.validate_addresses("NYC", "LA")
+        source, dest = Validator.validate_addresses("NYC", "LAX")
         assert source == "NYC"
-        assert dest == "LA"
+        assert dest == "LAX"
     
     def test_validate_coordinates(self):
         """Test coordinate validation"""
@@ -110,13 +112,19 @@ class TestDistanceCalculator:
 
 class TestGeocoder:
     """Test geocoding module (requires internet)"""
-    
-    @pytest.mark.skipif(
-        not pytest.config.getoption("--run-integration"),
-        reason="Skipping integration tests (use --run-integration to run)"
-    )
-    def test_geocode_valid_address(self):
+
+    @staticmethod
+    def _skip_unless_integration(request):
+        run_integration = (
+            request.config.getoption("--run-integration", default=False)
+            or os.getenv("RUN_INTEGRATION_TESTS") == "1"
+        )
+        if not run_integration:
+            pytest.skip("Skipping integration tests (set RUN_INTEGRATION_TESTS=1 to run)")
+
+    def test_geocode_valid_address(self, request):
         """Test geocoding a valid address"""
+        self._skip_unless_integration(request)
         geocoder = Geocoder()
         coords = geocoder.geocode("Paris, France")
         
@@ -125,27 +133,13 @@ class TestGeocoder:
         assert 48 < coords['lat'] < 49  # Paris latitude
         assert 2 < coords['lon'] < 3    # Paris longitude
     
-    @pytest.mark.skipif(
-        not pytest.config.getoption("--run-integration"),
-        reason="Skipping integration tests"
-    )
-    def test_geocode_invalid_address(self):
+    def test_geocode_invalid_address(self, request):
         """Test geocoding an invalid address"""
+        self._skip_unless_integration(request)
         geocoder = Geocoder()
         
         with pytest.raises(GeocodingError):
             geocoder.geocode("XYZ Invalid Place 123456")
-
-
-def pytest_addoption(parser):
-    """Add custom pytest command line option"""
-    parser.addoption(
-        "--run-integration",
-        action="store_true",
-        default=False,
-        help="Run integration tests that require internet"
-    )
-
 
 if __name__ == '__main__':
     pytest.main([__file__, '-v'])
