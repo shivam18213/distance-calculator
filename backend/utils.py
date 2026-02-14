@@ -1,8 +1,3 @@
-"""
-Utilities module
-Helper functions for distance calculations and conversions
-"""
-
 from math import radians, cos, sin, asin, sqrt
 import logging
 
