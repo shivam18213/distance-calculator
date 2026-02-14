@@ -1,9 +1,8 @@
 class Config:
     # app configs
-    DEBUG = True
+    DEBUG = 'True'
     HOST = '0.0.0.0'
-    PORT = 5000
-
+    PORT = 'FLASK_PORT', 5000
     
     # distance queris db
     DATABASE_NAME = 'distance_queries.db'
