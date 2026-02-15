@@ -1,3 +1,39 @@
+
+## Screenshots of the app:
+![alt text](1.png)
+
+![alt text](2.png)
+
+![alt text](3.png)
+
+![alt text](4.png)
+
+![alt text](5.png)
+
+![alt text](backendrunning.png)
+
+![alt text](frontendrunning.png)
+
+## Mannual and unit testing:
+
+![alt text](postmanapitest1.png)
+
+![alt text](postmanapitest2.png)
+
+![alt text](postmanapitest3.png)
+
+![alt text](tests.png)
+
+## Docker
+
+Images published in dockerhub:
+Backend- https://hub.docker.com/r/shivam18213/distance-calculator
+Frontend- https://hub.docker.com/r/shivam18213/distance-calculator-frontend
+
+![alt text](docker1.png)
+![alt text](docker2.png)
+![alt text](docker3.png)
+
 ## Setup Instructions
 
 ### Backend Setup
